@@ -2,6 +2,7 @@ import Logger from "js-logger";
 import React from "react";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { initializeLogger } from "./common/logger";
+
 const App = () => {
   useEffect(() => {
     initializeLogger();
