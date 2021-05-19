@@ -30,4 +30,5 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  successfully_created: "Shortened link was successfully created!"
+  no_data: "Please provide with the URL!"
