@@ -3,7 +3,8 @@ class UrlsController < ApplicationController
 
   # GET /urls or /urls.json
   def index
-    @urls = Url.all
+    urls = Url.all
+    render status: :ok, json: { urls: urls}
   end
 
   # GET /urls/1 or /urls/1.json

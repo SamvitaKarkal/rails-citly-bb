@@ -1,5 +1,5 @@
-import Logger from "js-logger";
-import React from "react";
+import logger from "js-logger";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import { initializeLogger } from "./common/logger";
 

@@ -1,11 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const TableRow = ({
-  data,
-  //visitHandler,
-  pinUrl,
-}) => {
+const TableRow = ({ data, visitHandler, pinUrl }) => {
   return (
     <tbody className="bg-white divide-y divide-gray-200">
       {data.map(rowData => (
@@ -36,7 +32,7 @@ const TableRow = ({
           </td>
           <td
             className="px-6 py-3 text-sm break-all font-medium leading-5 max-w-xs cursor-pointer"
-            onClick={() => visitLinkHandler(data.short_url)}
+            onClick={() => visitHandler(data.short_url)}
           >
             {data.short_url}
           </td>
