@@ -1,44 +1,56 @@
 import React, { useState, useEffect } from "react";
+import { isNil, isEmpty, either } from "ramda";
 import Container from "components/Container";
 import Table from "components/URLs/Table/index";
 import CreateUrl from "components/URLs/CreateUrl";
 import PageLoader from "components/PageLoader";
 import urlsApi from "apis/urls";
+import logger from "js-logger";
 
 const Dashboard = () => {
   const [urls, setUrls] = useState([]);
   // for creating short url links
-  const [newUrl, setNewUrl] = useState("");
+  const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(true);
 
   const fetchUrls = async () => {
     try {
       const response = await urlsApi.list();
       setUrls(response.data.urls);
-      setLoading(false);
+      //
     } catch (error) {
       logger.error(error);
+    } finally {
       setLoading(false);
     }
   };
 
-  const createUrl = async () => {
+  const handleSubmit = async event => {
+    event.preventDefault();
     try {
-      setLoading(true);
-      await urlsApi.create({ newUrl: { original_url: newUrl } });
-      setNewUrl("");
-      Toastr.success("Shortened URL created!");
+      await urlsApi.create({ url: { original_url: url } });
+      setUrl("");
       fetchUrls();
     } catch (error) {
       logger.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const visitHandler = visit => {
-    setTimeout(() => {
-      fetchUrls();
-    }, 1000);
-    window.open(visit, "_blank");
+  const visitHandler = async (slug, visit, click_count) => {
+    try {
+      await urlsApi.update({
+        slug,
+        payload: { url: { click_count: click_count + 1 } },
+      });
+      setTimeout(() => {
+        fetchUrls();
+      }, 1000);
+      window.open(visit, "_blank");
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   const pinUrl = async (slug, status) => {
@@ -46,7 +58,7 @@ const Dashboard = () => {
       const toggledStatus = status === "pinned" ? "unpinned" : "pinned";
       await urlsApi.update({
         slug,
-        payload: { newUrl: { status: toggledStatus } },
+        payload: { url: { status: toggledStatus } },
       });
       await fetchUrls();
     } catch (error) {
@@ -60,22 +72,22 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="w-screen h-screen">
-        <PageLoader />
-      </div>
+      <Container>
+        <div className="w-screen h-screen">
+          <PageLoader />
+        </div>
+      </Container>
     );
   }
 
   return (
     <Container>
-      <div>
-        <CreateUrl
-          url={newUrl}
-          setUrl={setNewUrl}
-          createUrl={createUrl}
-          loading={loading}
-        />
-      </div>
+      <CreateUrl
+        url={url}
+        setUrl={setUrl}
+        handleSubmit={handleSubmit}
+        loading={loading}
+      />
       {either(isNil, isEmpty)(urls) ? (
         <h1 className="text-xl leading-5 text-center mt-4">
           No Short URLs created yet. Create new one now!

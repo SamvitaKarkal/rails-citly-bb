@@ -1,70 +1,78 @@
 class UrlsController < ApplicationController
-  before_action :set_url, only: %i[ show edit update destroy ]
+  require 'securerandom'
+
+  #before_action :check_url_presence, only: :create 
+  before_action :load_url, only: [:show, :update]
+  before_action :generate_slug, :short_url, only: :create
 
   # GET /urls or /urls.json
   def index
     urls = Url.all
-    render status: :ok, json: { urls: urls}
+    #.order('updated_at DESC', 'created_at DESC')
+    render status: :ok, json: {
+      urls: urls.organize()
+    }
   end
 
-  # GET /urls/1 or /urls/1.json
   def show
+    @url = Url.find_by_slug(params[:slug])
+    render 'errors/404', status: 404 if @url.nil?
+    @url.update_attribute(:click_count, @url.click_count + 1)
+    redirect_to @url.original_url
   end
 
-  # GET /urls/new
-  def new
-    @url = Url.new
-  end
-
-  # GET /urls/1/edit
-  def edit
-  end
-
-  # POST /urls or /urls.json
   def create
-    @url = Url.new(url_params)
-
-    respond_to do |format|
-      if @url.save
-        format.html { redirect_to @url, notice: "Url was successfully created." }
-        format.json { render :show, status: :created, location: @url }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @url.errors, status: :unprocessable_entity }
-      end
+    @url = Url.new(url_params.merge(slug: @slug, short_url: @short_url))
+    if @url.save
+      render status: :ok, json: { notice: t('successfully_created') }
+    else
+      render status: :unprocessable_entity,
+      json: { error: @url.errors.full_messages.to_sentence }
     end
   end
 
-  # PATCH/PUT /urls/1 or /urls/1.json
   def update
-    respond_to do |format|
-      if @url.update(url_params)
-        format.html { redirect_to @url, notice: "Url was successfully updated." }
-        format.json { render :show, status: :ok, location: @url }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @url.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /urls/1 or /urls/1.json
-  def destroy
-    @url.destroy
-    respond_to do |format|
-      format.html { redirect_to urls_url, notice: "Url was successfully destroyed." }
-      format.json { head :no_content }
+    if @url.update(url_params)
+    render status: :ok, json: {
+      message: 'Link has been pinned'
+    }
+    else
+      render status: :unprocessable_entity,
+      json: { error: @url.errors.full_messages.to_sentence }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_url
-      @url = Url.find(params[:id])
-    end
+
+    def load_url
+      @url = Url.find_by_slug(params[:slug])
+      render json: {errors: 'No link found'} unless @url
+      rescue ActiveRecord::RecordNotFound => e
+        render json: { error: e }, status: :not_found
+    end  
+
+    # def check_url_presence
+    #   url = url_params[:url]
+    #   if Url.find_by(url: url)
+    #     render status: :unprocessable_entity,
+    #            json: { error: "URL already present"}
+    #   end
+    # end
 
     # Only allow a list of trusted parameters through.
     def url_params
-      params.fetch(:url, {})
+      params.require(:url).permit(:original_url, :status, :click_count)
     end
+
+    def generate_slug
+      @slug = SecureRandom.alphanumeric(8) 
+      #if self.slug.nil? || self.slug.empty?
+      url =Url.find_by(slug: @slug)
+      generate_slug if url
+    end
+
+    def short_url
+      @short_url = "#{request.base_url}/#{@slug}"
+    end
+
 end

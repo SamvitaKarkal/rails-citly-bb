@@ -2,14 +2,14 @@ import React from "react";
 
 const TableHeader = () => {
   return (
-    <thead className="bg-purple-600">
+    <thead className="bg-purple-600 rounded rounded-b-none">
       <tr>
         <th className="w-1 bg-gray-50"></th>
-        <th className="px-6 py-3 text-xs font-bold leading-4 tracking-wider text-left text-bb-gray-600 uppercase text-white">
+        <th className="px-6 py-6 text-lg leading-4 tracking-wider text-center text-white">
           Original
         </th>
-        <th className="px-6 py-3 text-xs font-bold leading-4 tracking-wider text-left text-bb-gray-600 uppercase text-white">
-          Short URL
+        <th className="px-6 py-6 text-lg leading-4 tracking-wider text-center text-white">
+          Short Url
         </th>
         <th className="w-1 bg-gray-50"></th>
       </tr>
