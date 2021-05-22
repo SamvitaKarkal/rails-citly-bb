@@ -1,9 +1,8 @@
 class UrlsController < ApplicationController
   require 'securerandom'
 
-  #before_action :check_url_presence, only: :create 
   before_action :load_url, only: [:show, :update]
-  before_action :generate_slug, :short_url, only: :create
+  #before_action :generate_slug, :short_url, only: :create
 
   # GET /urls or /urls.json
   def index
@@ -22,7 +21,9 @@ class UrlsController < ApplicationController
   end
 
   def create
-    @url = Url.new(url_params.merge(slug: @slug, short_url: @short_url))
+    slug = generate_slug
+    @url = Url.new(original_url: url_params[:original_url], slug: slug, short_url: short_url(slug))
+   # @url = Url.new(url_params.merge(slug: @slug, short_url: @short_url))
     if @url.save
       render status: :ok, json: { notice: t('successfully_created') }
     else
@@ -45,8 +46,8 @@ class UrlsController < ApplicationController
   private
 
     def load_url
-      @url = Url.find_by_slug(params[:slug])
-      render json: {errors: 'No link found'} unless @url
+      @url = Url.find_by_slug(params[:url][:slug])
+      render json: {errors:  @url.errors.full_messages.to_sentence} unless @url
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: e }, status: :not_found
     end  
@@ -65,14 +66,11 @@ class UrlsController < ApplicationController
     end
 
     def generate_slug
-      @slug = SecureRandom.alphanumeric(8) 
-      #if self.slug.nil? || self.slug.empty?
-      url =Url.find_by(slug: @slug)
-      generate_slug if url
+      SecureRandom.alphanumeric(8) 
     end
 
-    def short_url
-      @short_url = "#{request.base_url}/#{@slug}"
+    def short_url(slug)
+      "#{request.base_url}/#{slug}"
     end
 
 end
