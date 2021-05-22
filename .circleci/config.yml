@@ -9,6 +9,8 @@ jobs:
       - image: circleci/postgres:9.6
         environment:
           POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: rails_citly_bb_test
+          POSTGRES_USER: samvita
 
     #application directory change it with your application directory name
     working_directory: ~/rails-citly-bb
@@ -29,6 +31,10 @@ jobs:
       - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
 
       # Setup database
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 1m
 
       - run: cp config/database.yml.ci config/database.yml
       - run: bundle exec rails db:create db:schema:load --trace
