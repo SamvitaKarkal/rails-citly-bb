@@ -46,8 +46,8 @@ class UrlsController < ApplicationController
   private
 
     def load_url
-      @url = Url.find_by_slug(params[:url][:slug])
-      render json: {errors:  @url.errors.full_messages.to_sentence} unless @url
+      @url = Url.find_by_slug(params[:slug])
+      render json: {error:  @url.errors.full_messages.to_sentence} unless @url
       rescue ActiveRecord::RecordNotFound => e
         render json: { error: e }, status: :not_found
     end  

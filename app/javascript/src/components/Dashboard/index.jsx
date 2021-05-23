@@ -5,7 +5,6 @@ import Table from "components/URLs/Table/index";
 import CreateUrl from "components/URLs/CreateUrl";
 import PageLoader from "components/PageLoader";
 import urlsApi from "apis/urls";
-import logger from "js-logger";
 
 const Dashboard = () => {
   const [urls, setUrls] = useState([]);

@@ -7,8 +7,8 @@ gem 'react-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.3', '>= 6.1.3.2'
 # Use postgresql as the database for Active Record
-# gem 'pg', '~> 1.1'
-#gem 'sqlite3', '~> 1.4', :group => [:development, :test]
+
+gem 'sqlite3', '~> 1.4', :group => [:development, :test]
 
 gem 'pg', :group => [:production]
 # Use Puma as the app server
