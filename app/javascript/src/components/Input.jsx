@@ -26,7 +26,7 @@ const Input = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-2xl px-6 py-2 placeholder-gray-400
+          className="w-full py-2 placeholder-gray-400
           transition duration-150 ease-in-out border
           border-gray-300 rounded rounded-r-none appearance-none
           focus:outline-none focus:shadow-outline-violet
