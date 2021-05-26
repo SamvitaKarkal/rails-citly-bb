@@ -1,9 +1,9 @@
 # README
 
-[![samvitakarkal]](https://circleci.com/gh/samvitakarkal/rails-citly-bb.svg?style=svg)](https://circleci.com/gh/samvitakarkal/rails-citly-bb)
+[![SamvitaKarkal](https://circleci.com/gh/SamvitaKarkal/rails-citly-bb.svg?style=shield)](https://circleci.com/gh/SamvitaKarkal/rails-citly-bb)
 <br/>
 
-#[Citly](https://rails-citly-bb.herokuapp.com/)
+# [Citly](https://rails-citly-bb.herokuapp.com/)
 
 The URL Shortner
 
