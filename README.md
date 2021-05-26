@@ -3,7 +3,7 @@
 
 # [Citly](https://rails-citly-bb.herokuapp.com/)
 
-# The URL Shortner
+# The URL Shortener
 
    Ever found your bookmarks go haywire because of their length and felt really frustrated at your inability to have better access to more important links? Well, then we have a solution for you!
 
