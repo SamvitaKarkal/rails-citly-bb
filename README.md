@@ -1,11 +1,25 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![samvitakarkal]](https://circleci.com/gh/samvitakarkal/rails-citly-bb.svg?style=svg)](https://circleci.com/gh/samvitakarkal/rails-citly-bb)
+<br/>
 
-Things you may want to cover:
+#[Citly](https://rails-citly-bb.herokuapp.com/)
 
-* Ruby version
+The URL Shortner
+
+   Ever found your bookmarks go haywire because of their length and felt really frustrated at your inability to have better access to more important links? Well, then we have a solution for you!
+
+   Check out our Citly app that can solve all of you woes. An easy bookmarker app for the needfull.
+
+   So, what are you waiting for? Go check it out! You can reach the site by just clicking on the title mentioned here! 
+
+
+                    * Happy organization to you *
+
+
+Some other important details:
+
+* Ruby version - Ruby 2.7.2
 
 * System dependencies
 
