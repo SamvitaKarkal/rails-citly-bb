@@ -12,7 +12,7 @@
    So, what are you waiting for? Go check it out! You can reach the site by just clicking on the title mentioned here! 
 
 
-                    * Happy organization to you *
+                                                              * Happy organization to you *
 
 
 Some other important details:
